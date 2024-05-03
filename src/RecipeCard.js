@@ -1,6 +1,12 @@
 import React from "react";
-
+import { Link } from "react-router-dom"; // Import the Link component
+import "./index.css";
 const RecipeCard = ({ recipe }) => {
+  console.log(recipe);
+  if (!recipe) {
+    return <div>Loading...</div>; // Or return null, or some placeholder content
+  }
+
   return (
     <div
       className="bg-white shadow-lg rounded-lg  
@@ -39,15 +45,13 @@ const RecipeCard = ({ recipe }) => {
           ))}
         </div>
         <div className="flex items-center justify-between">
-          <a
-            href={"/"}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to={`/recipe/${recipe.label}`} // Assuming recipe has an id property
             className="text-indigo-500 font-semibold  
                                    hover:underline"
           >
             View Recipe
-          </a>
+          </Link>
           <div className="flex items-center text-gray-600">
             <span className="flex items-center mr-4">
               <svg
@@ -89,6 +93,7 @@ const RecipeCard = ({ recipe }) => {
       </div>
     </div>
   );
+  // console.log(data); // Log the entire data object to understand its structure
 };
 
 export default RecipeCard;

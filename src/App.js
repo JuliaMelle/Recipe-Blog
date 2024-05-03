@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import RecipeCard from "./RecipeCard";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import RecipeDetails from "./RecipeDetails";
 
 const App = () => {
   const APP_ID = "b5e8ffaa";
@@ -62,6 +64,10 @@ const App = () => {
 
   return (
     <div className="bg-blue-50 min-h-screen font-sans">
+      <Routes>
+        <Route path="/recipe/:id" element={<RecipeDetails />} />
+        {/* Other routes */}
+      </Routes>
       <header className="bg-blue-500 py-4 text-white">
         <div className="container mx-auto text-center">
           <h1
