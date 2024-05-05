@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 import { Link } from "react-router-dom"; // Import the Link component
 import "./index.css";
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, setIsDialogOpen }) => {
   console.log(recipe);
   if (!recipe) {
     return <div>Loading...</div>; // Or return null, or some placeholder content
   }
+  // Function to open the dialog
 
+  const openDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  // Function to close the dialog
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+  };
   return (
     <div
       className="bg-white shadow-lg rounded-lg  
@@ -47,6 +57,7 @@ const RecipeCard = ({ recipe }) => {
         <div className="flex items-center justify-between">
           <Link
             to={`/recipe/${recipe.label}`} // Assuming recipe has an id property
+            onClick={openDialog}
             className="text-indigo-500 font-semibold  
                                    hover:underline"
           >

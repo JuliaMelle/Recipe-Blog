@@ -61,13 +61,18 @@ const App = () => {
     setSearch_Query(search_recipe);
     setSearch_recipe("");
   };
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const openDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  // Function to close the dialog
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+  };
   return (
     <div className="bg-blue-50 min-h-screen font-sans">
-      <Routes>
-        <Route path="/recipe/:id" element={<RecipeDetails />} />
-        {/* Other routes */}
-      </Routes>
       <header className="bg-blue-500 py-4 text-white">
         <div className="container mx-auto text-center">
           <h1
@@ -123,12 +128,25 @@ const App = () => {
         </form>
       </div>
       <div className="container mx-auto mt-8 p-4 sm:px-6 lg:px-8">
+        <Routes>
+          <Route
+            path="/recipe/:id"
+            element={
+              <RecipeDetails open={isDialogOpen} setOpen={setIsDialogOpen} />
+            }
+          />
+        </Routes>
+
         <div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  
                 lg:grid-cols-4 gap-4"
         >
           {food_recipes.map((recipe) => (
-            <RecipeCard key={recipe.recipe.label} recipe={recipe.recipe} />
+            <RecipeCard
+              key={recipe.recipe.label}
+              recipe={recipe.recipe}
+              setIsDialogOpen={setIsDialogOpen}
+            />
           ))}
         </div>
       </div>
