@@ -5,7 +5,7 @@ import RecipeCard from "./RecipeAPI/RecipeCard";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import RecipeDetails from "./RecipeAPI/RecipeDetails";
 
-import Navbar from "./Navbar"; // Import the Navbar component
+import Navbar from "./component/Navbar"; // Import the Navbar component
 import Signup from "./Signup";
 const App = () => {
   const APP_ID = "b5e8ffaa";
