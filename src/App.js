@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Navbar from "./Navbar";
 import Signup from "./Signup";
-import RecipeMain from "./RecipeAPI/RecipeMain"; // Assuming this is the correct component
+import RecipeMain from "./RecipeAPI/RecipeMain";
 import RecipeDetails from "./RecipeAPI/RecipeDetails";
 
 const App = () => {
@@ -28,9 +28,10 @@ const App = () => {
   );
 };
 
-// Wrapper component to pass props to RecipeDetails
+// Wrapper component to pass props to RecipeDetails, Para ndii kunin ng RecipeMain sa taas
+// yung const na dapat makuha ng RecipeDetails
 const RecipeDetailsWrapper = () => {
-  // const { id } = useParams(); // Access the id parameter from the route
+  // const { id } = useParams(); // Access the id parameter from the route //Doesnt need nung tinry ko
   const [isDialogOpen, setIsDialogOpen] = useState(true); // State for dialog
 
   return (
