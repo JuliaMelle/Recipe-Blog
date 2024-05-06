@@ -1,9 +1,9 @@
 // App.js
 
 import React, { useEffect, useState } from "react";
-import RecipeCard from "./RecipeCard";
+import RecipeCard from "./RecipeAPI/RecipeCard";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import RecipeDetails from "./RecipeDetails";
+import RecipeDetails from "./RecipeAPI/RecipeDetails";
 
 const App = () => {
   const APP_ID = "b5e8ffaa";
@@ -19,13 +19,6 @@ const App = () => {
     getRecipesFunction();
   }, [search_query]);
 
-  // const getRecipesFunction = async () => {
-  //   const response = await fetch(
-  //     `https://api.edamam.com/search?q=${search_query}&app_id=${APP_ID}&app_key=${APP_KEY}`
-  //   );
-  //   const data = await response.json();
-  //   setfood_recipes(data.hits);
-  // };
   const getRecipesFunction = async () => {
     setIsLoading(true);
     setError(null);
