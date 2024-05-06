@@ -1,4 +1,4 @@
-import "./index.css";
+import "./styles/index.css";
 /*
   This example requires some changes to your config:
   
