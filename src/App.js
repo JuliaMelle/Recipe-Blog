@@ -3,8 +3,14 @@
 import React, { useEffect, useState } from "react";
 import RecipeCard from "./RecipeAPI/RecipeCard";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+<<<<<<< Updated upstream
 import RecipeDetails from "./RecipeAPI/RecipeDetails";
 
+=======
+import RecipeDetails from "./RecipeDetails";
+import Navbar from "./Navbar"; // Import the Navbar component
+import Signup from "./Signup";
+>>>>>>> Stashed changes
 const App = () => {
   const APP_ID = "b5e8ffaa";
   const APP_KEY = "366c56854db11413d53540a02d074f37";
@@ -66,7 +72,7 @@ const App = () => {
   };
   return (
     <div className="bg-blue-50 min-h-screen font-sans">
-      <header className="bg-blue-500 py-4 text-white">
+      {/* <header className="bg-blue-500 py-4 text-white">
         <div className="container mx-auto text-center">
           <h1
             className="text-3xl sm:text-4xl  
@@ -76,7 +82,8 @@ const App = () => {
             <span className="block">RECIPES</span>
           </h1>
         </div>
-      </header>
+      </header> */}
+      <Navbar /> {/* Include the Navbar here */}
       <div
         className="container mx-auto mt-8 p-4  
                             sm:px-6 lg:px-8"
@@ -128,6 +135,7 @@ const App = () => {
               <RecipeDetails open={isDialogOpen} setOpen={setIsDialogOpen} />
             }
           />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
 
         <div
