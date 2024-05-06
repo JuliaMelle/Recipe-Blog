@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom"; // Import the Link component
-import "./index.css";
+import "../styles/index.css";
 const RecipeCard = ({ recipe, setIsDialogOpen }) => {
   console.log(recipe);
   if (!recipe) {
