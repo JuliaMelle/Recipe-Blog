@@ -11,7 +11,7 @@ const navigation = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-
+// HELLO
 export default function Navbar() {
   // State to track if the user is signed in
   const [isSignedIn, setIsSignedIn] = useState(false); // turn this into true to test if signed in
