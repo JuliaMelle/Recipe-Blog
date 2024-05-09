@@ -10,6 +10,8 @@ import Signup from "./Signup";
 import RecipeMain from "./RecipeAPI/RecipeMain";
 import RecipeDetails from "./RecipeAPI/RecipeDetails";
 import Login from "./Login";
+import Profile from "./Profile";
+
 const App = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -24,6 +26,7 @@ const App = () => {
         />
         <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );
