@@ -9,11 +9,8 @@ import Navbar from "./component/Navbar";
 import Signup from "./Signup";
 import RecipeMain from "./RecipeAPI/RecipeMain";
 import RecipeDetails from "./RecipeAPI/RecipeDetails";
-<<<<<<< Updated upstream
-=======
 import Login from "./Login";
 import Profile from "./Profile";
->>>>>>> Stashed changes
 
 const App = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -28,11 +25,8 @@ const App = () => {
           element={<RecipeMain open={isDialogOpen} setOpen={setIsDialogOpen} />}
         />
         <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
-<<<<<<< Updated upstream
-=======
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
->>>>>>> Stashed changes
       </Routes>
     </div>
   );

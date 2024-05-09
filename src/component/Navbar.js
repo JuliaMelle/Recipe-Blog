@@ -13,12 +13,8 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-<<<<<<< Updated upstream:src/component/Navbar.js
   // State to track if the user is signed in
   const [isSignedIn, setIsSignedIn] = useState(false); // turn this into true to test if signed in
-=======
-  const [isSignedIn, setIsSignedIn] = useState(true);
->>>>>>> Stashed changes:src/components/Navbar.js
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
