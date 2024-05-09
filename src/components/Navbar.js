@@ -2,6 +2,9 @@ import React, { useState, Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import logo from "../assets/whitelogo.png";
+import { FaUser } from "react-icons/fa";
+
 const navigation = [
   { name: "Recipe", href: "/", current: true },
   // { name: "Projects", href: "#", current: false },
@@ -14,7 +17,7 @@ function classNames(...classes) {
 // HELLO
 export default function Navbar() {
   // State to track if the user is signed in
-  const [isSignedIn, setIsSignedIn] = useState(false); // turn this into true to test if signed in
+  const [isSignedIn, setIsSignedIn] = useState(true); // turn this into true to test if signed in
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -38,8 +41,8 @@ export default function Navbar() {
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
+                    src={logo}
+                    alt="Gourmetgathering"
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
@@ -71,11 +74,8 @@ export default function Navbar() {
                       <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
+
+                        <FaUser className="h-8 w-8 rounded-full text-white	" />
                       </Menu.Button>
                     </div>
                     <Transition
