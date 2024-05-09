@@ -5,7 +5,7 @@ import {
   Routes,
   useParams,
 } from "react-router-dom";
-import Navbar from "./component/Navbar";
+import Navbar from "./components/Navbar";
 import Signup from "./Signup";
 import RecipeMain from "./RecipeAPI/RecipeMain";
 import RecipeDetails from "./RecipeAPI/RecipeDetails";
