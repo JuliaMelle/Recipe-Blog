@@ -17,7 +17,10 @@ function classNames(...classes) {
 export default function Navbar() {
   // State to track if the user is signed in
   const [isSignedIn, setIsSignedIn] = useState(true); // turn this into true to test if signed in
-
+  // Function to handle sign out
+  const handleSignOut = () => {
+    setIsSignedIn(false);
+  };
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -39,12 +42,12 @@ export default function Navbar() {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
-                    className="h-8 w-auto"
+                    className="h-12 w-auto"
                     src={logo}
                     alt="Gourmetgathering"
                   />
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
+                <div className="hidden sm:ml-6 sm:mt-2 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
@@ -100,7 +103,7 @@ export default function Navbar() {
                             </Link>
                           )}
                         </Menu.Item>
-                        <Menu.Item>
+                        {/* <Menu.Item>
                           {({ active }) => (
                             <a
                               href="#"
@@ -112,11 +115,12 @@ export default function Navbar() {
                               Settings
                             </a>
                           )}
-                        </Menu.Item>
+                        </Menu.Item> */}
                         <Menu.Item>
                           {({ active }) => (
                             <a
                               href="#"
+                              onClick={handleSignOut}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
