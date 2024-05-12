@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Navbar from "./component/Navbar";
 import Signup from "./Signup";
+import GourmetGatherings from "./GourmetGatherings";
 import RecipeMain from "./RecipeAPI/RecipeMain";
 import RecipeDetails from "./RecipeAPI/RecipeDetails";
 
@@ -18,6 +19,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/signup" element={<Signup />} />
+        <Route path="/gourmetgatherings" element={<GourmetGatherings />} />
         <Route
           path="/"
           element={<RecipeMain open={isDialogOpen} setOpen={setIsDialogOpen} />}
