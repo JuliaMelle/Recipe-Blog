@@ -4,9 +4,11 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import logo from "../assets/whitelogo.png";
 import { FaUser } from "react-icons/fa";
+import { useLocation } from "react-router-dom"; // Import useLocation
+
 const navigation = [
   { name: "Recipe", href: "/", current: true },
-  // { name: "Projects", href: "#", current: false },
+  { name: "Chef's Flix ", href: "/ytRecipe", current: false },
   // { name: "Calendar", href: "#", current: false },
 ];
 
@@ -17,9 +19,16 @@ function classNames(...classes) {
 export default function Navbar() {
   // State to track if the user is signed in
   const [isSignedIn, setIsSignedIn] = useState(true); // turn this into true to test if signed in
+
+  const location = useLocation(); // Get the current location
+
   // Function to handle sign out
   const handleSignOut = () => {
     setIsSignedIn(false);
+  };
+  // Determine if the current navigation item is active
+  const isActive = (item) => {
+    return location.pathname === item.href;
   };
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -54,7 +63,7 @@ export default function Navbar() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current
+                          isActive(item)
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
