@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 const tempRecipeData = [
   {
     label: "Spaghetti Carborator",
-    dishType: ["Pasta"],
+    dishType: "Pasta",
     image: "https://i.imgflip.com/4ppvec.jpg",
     ingredientLines: [
       { ingredient: "Spaghetti", quantity: "200g" },
@@ -14,11 +14,20 @@ const tempRecipeData = [
       { ingredient: "Eggs", quantity: "2" },
       { ingredient: "Parmesan Cheese", quantity: "50g" },
       { ingredient: "Black Pepper", quantity: "to taste" },
+      { ingredient: "Garlic Cloves", quantity: "2" },
+      { ingredient: "Soy Sauce", quantity: "2 tbsp" },
+      { ingredient: "Sesame Oil", quantity: "1 tbsp" },
+      { ingredient: "Vegetable Oil", quantity: "2 tbsp" },
+      { ingredient: "Garlic Cloves", quantity: "2" },
+      { ingredient: "Soy Sauce", quantity: "2 tbsp" },
+      { ingredient: "Sesame Oil", quantity: "1 tbsp" },
+      { ingredient: "Vegetable Oil", quantity: "2 tbsp" },
     ],
+    creator: "Chef A",
   },
   {
     label: "You Telling Me A Chicken Fried This Stir?",
-    dishType: ["Stir-Fry"],
+    dishType: "Stir-Fry",
     image:
       "https://img.buzzfeed.com/buzzfeed-static/static/2019-11/15/17/tmp/bd533a881687/tmp-name-2-1053-1573839022-0_dblbig.jpg?resize=1200:*",
     ingredientLines: [
@@ -30,6 +39,7 @@ const tempRecipeData = [
       { ingredient: "Sesame Oil", quantity: "1 tbsp" },
       { ingredient: "Vegetable Oil", quantity: "2 tbsp" },
     ],
+    creator: "Chef B",
   },
 ];
 

@@ -18,7 +18,7 @@ const GourmetCard = ({ recipe }) => {
   }
 
   return (
-    <>
+    <div style={{ overflow: "hidden" }}>
       {" "}
       <div
         class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-transform hover:scale-105 w-100 h-100"
@@ -34,8 +34,9 @@ const GourmetCard = ({ recipe }) => {
           <div
             className="absolute top-2 left-2 bg-gradient-to-r from-purple-400 to-blue-500 
                                 text-white py-1 px-2 rounded"
+            style={{ fontWeight: "bolder" }}
           >
-            {recipe.dishType[0]}
+            {recipe.dishType}
           </div>
         </div>
         <div className="p-4">
@@ -47,13 +48,13 @@ const GourmetCard = ({ recipe }) => {
           </h1>
         </div>
       </div>
-      <div style={{ position: "absolute" }}>
+      <div style={{ position: "absolute", zIndex: "9999" }}>
         {isDialogOpen && (
           <GourmetDetails closeDialog={closeDialog} recipez={recipe} />
         )}{" "}
         {/* Pass closeDialog function as prop to GourmetDetails */}
       </div>
-    </>
+    </div>
   );
   // console.log(data); // Log the entire data object to understand its structure
 };
