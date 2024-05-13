@@ -16,7 +16,7 @@ const App = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
-    <div className="bg-blue-50 min-h-screen font-sans">
+    <div className="bg-custom-cream min-h-screen font-sans">
       <Navbar />
       <Routes>
         <Route path="/signup" element={<Signup />} />

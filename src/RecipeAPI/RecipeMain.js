@@ -50,14 +50,14 @@ const RecipeMain = ({ isDialogOpen, setIsDialogOpen }) => {
     setSearch_recipe("");
   };
   return (
-    <div className="bg-blue-50 min-h-screen font-sans">
+    <div className=" h-lvh font-sans">
       <div
         className="container mx-auto mt-8 p-4  
-                            sm:px-6 lg:px-8"
+                            sm:px-6 lg:px-8 "
       >
         <form
           onSubmit={getSearchFunction}
-          className="bg-white p-4 sm:p-6  
+          className="bg-card-color p-4 sm:p-6  
                                lg:p-8 rounded-lg shadow-md  
                                flex flex-col sm:flex-row items-center  
                                justify-center space-y-4 sm:space-y-0  
@@ -73,22 +73,22 @@ const RecipeMain = ({ isDialogOpen, setIsDialogOpen }) => {
               value={search_recipe}
               onChange={updateSearchFunction}
               placeholder="Search for recipes..."
-              className="w-full py-3 px-4 bg-gray-100  
-                                       border border-blue-300 focus:ring-blue-500  
-                                       focus:border-blue-500 rounded-full  
-                                       text-gray-700 outline-none transition-colors  
+              className="w-full py-3 px-4 bg-[#FFFDD7] placeholder-purple
+                                       border border-custom-cream focus:ring-custom-purple  
+                                       focus:border-custom-darkpurple rounded-full  
+                                       text-custom-darkpurple outline-none transition-colors  
                                        duration-200 ease-in-out focus:ring-2  
-                                       focus:ring-blue-900 focus:bg-transparent  
+                                       focus:ring-custom-purple focus:bg-transparent  
                                        focus:shadow-md"
             />
           </div>
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 focus:ring-2  
-                        focus:ring-blue-900 text-white font-semibold py-3 px-6  
+            className="bg-custom-purple hover:bg-custom-darkpurple focus:ring-2  
+                        focus:ring-custom-purple text-white font-semibold py-3 px-6  
                         rounded-full transform hover:scale-105 transition-transform  
                         focus:outline-none focus:ring-offset-2  
-                        focus:ring-offset-blue-700"
+                        focus:ring-offset-custom-purple"
           >
             Search Recipe
           </button>

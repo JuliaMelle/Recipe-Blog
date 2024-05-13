@@ -26,7 +26,7 @@ const RecipeCard = ({ recipe, setIsDialogOpen }) => {
         className="font-semibold  
        "
       >
-        <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-transform hover:scale-105 w-100 h-100">
+        <div class="bg-card-color shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-transform hover:scale-105 w-100 h-100">
           <div className="relative">
             <img
               className="w-full h-48 object-cover  
