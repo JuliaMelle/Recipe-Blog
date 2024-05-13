@@ -2,9 +2,13 @@ import React, { useState, Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import logo from "../assets/whitelogo.png";
+import { FaUser } from "react-icons/fa";
+import { useLocation } from "react-router-dom"; // Import useLocation
+
 const navigation = [
   { name: "Recipe", href: "/", current: true },
-  // { name: "Projects", href: "#", current: false },
+  { name: "Chef's Flix ", href: "/ytRecipe", current: false },
   // { name: "Calendar", href: "#", current: false },
 ];
 
@@ -14,8 +18,18 @@ function classNames(...classes) {
 // HELLO
 export default function Navbar() {
   // State to track if the user is signed in
-  const [isSignedIn, setIsSignedIn] = useState(false); // turn this into true to test if signed in
+  const [isSignedIn, setIsSignedIn] = useState(true); // turn this into true to test if signed in
 
+  const location = useLocation(); // Get the current location
+
+  // Function to handle sign out
+  const handleSignOut = () => {
+    setIsSignedIn(false);
+  };
+  // Determine if the current navigation item is active
+  const isActive = (item) => {
+    return location.pathname === item.href;
+  };
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -37,19 +51,19 @@ export default function Navbar() {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
+                    className="h-12 w-auto"
+                    src={logo}
+                    alt="Gourmetgathering"
                   />
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
+                <div className="hidden sm:ml-6 sm:mt-2 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current
+                          isActive(item)
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
@@ -71,11 +85,8 @@ export default function Navbar() {
                       <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
+
+                        <FaUser className="h-8 w-8 rounded-full text-white	" />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -90,18 +101,18 @@ export default function Navbar() {
                       <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href="#"
+                            <Link
+                              to="/profile"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
                               Your Profile
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
-                        <Menu.Item>
+                        {/* <Menu.Item>
                           {({ active }) => (
                             <a
                               href="#"
@@ -113,11 +124,12 @@ export default function Navbar() {
                               Settings
                             </a>
                           )}
-                        </Menu.Item>
+                        </Menu.Item> */}
                         <Menu.Item>
                           {({ active }) => (
                             <a
                               href="#"
+                              onClick={handleSignOut}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"

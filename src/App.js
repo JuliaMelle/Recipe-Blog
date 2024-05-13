@@ -5,12 +5,14 @@ import {
   Routes,
   useParams,
 } from "react-router-dom";
-import Navbar from "./component/Navbar";
+import Navbar from "./components/Navbar";
 import Signup from "./Signup";
 import GourmetGatherings from "./GourmetGatherings";
 import RecipeMain from "./RecipeAPI/RecipeMain";
 import RecipeDetails from "./RecipeAPI/RecipeDetails";
-
+import Login from "./Login";
+import Profile from "./Profile";
+import PlaylistComponent from "./pages/YoutubeApi/PlaylistComponent";
 const App = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -25,6 +27,10 @@ const App = () => {
           element={<RecipeMain open={isDialogOpen} setOpen={setIsDialogOpen} />}
         />
         <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        {/* <Route path="/logout" element={<Profile />} /> */}
+        <Route path="/ytRecipe" element={<PlaylistComponent />} />
       </Routes>
     </div>
   );
