@@ -170,12 +170,12 @@ export default function Navbar() {
                   <div className="flex items-center">
                     <Link
                       to="/signup"
-                      className="text-white hover:text-gray-300"
+                      className="ml-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     >
                       Sign up
                     </Link>
                     <a
-                      href="#"
+                      href="/login"
                       className="ml-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     >
                       Login
