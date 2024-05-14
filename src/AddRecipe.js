@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import app from "./FirebaseConfig";
 import { getDatabase, ref, set, push } from "firebase/database";
 import backgroundImage from "./assets/bg.jpg"; // adjust the path to your image
+import { CiWarning } from "react-icons/ci";
 
 function AddRecipe({ profileData }) {
   const [inputLabel, setInputLabel] = useState("");
   const [inputDishType, setInputDishType] = useState("");
   const [inputImage, setInputImage] = useState("");
+
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const [fields, setFields] = useState([{ ingredient: "", quantity: "" }]);
   const [tempRecipeData, setTempRecipeData] = useState([]);
@@ -22,9 +26,42 @@ function AddRecipe({ profileData }) {
       creator: profileData.username,
     });
   };
+  // Regular expression to match URLs
+  const urlRegex =
+    /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+  // Regular expression to match no special characters
+  const noSpecialCharsRegex = /^[a-zA-Z0-9\s]+$/;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if all required fields are filled out
+    if (!inputLabel || !inputDishType || !inputImage) {
+      setAlertMessage("Please fill out all required fields.");
+      setAlertVisible(true);
+
+      return; // Exit the function if any field is empty
+    }
+    // Check if the image link is a valid URL
+    if (!urlRegex.test(inputImage)) {
+      setAlertMessage("Please enter a valid URL for the dish image.");
+      setAlertVisible(true);
+
+      return; // Exit the function if the URL is invalid
+    }
+    // Check if all inputs match the no special characters regex
+    if (
+      !noSpecialCharsRegex.test(inputLabel) ||
+      !noSpecialCharsRegex.test(inputDishType) ||
+      !noSpecialCharsRegex.test(inputImage)
+    ) {
+      setAlertMessage(
+        "Special characters are not allowed in dish name, dish type, and image link."
+      );
+      setAlertVisible(true);
+
+      return;
+    }
     // Show a confirmation dialog
     const userResponse = window.confirm(
       "Are you sure you want to save the recipe? You will never be able to change it after submission."
@@ -54,7 +91,9 @@ function AddRecipe({ profileData }) {
   const handleAddFields = () => {
     setFields([...fields, { ingredient: "", quantity: "" }]);
   };
-
+  const closeAlert = () => {
+    setAlertVisible(false);
+  };
   return (
     <div
       className="relative p-6 flex justify-center items-center min-h-screen bg-gray-100"
@@ -64,6 +103,52 @@ function AddRecipe({ profileData }) {
         backgroundPosition: "center",
       }}
     >
+      {alertVisible && (
+        <div
+          className="fixed z-10 inset-0 overflow-y-auto"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="min-h-screen pt-32 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+              aria-hidden="true"
+            ></div>
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start ">
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left flex justify-center flex-row	">
+                    <CiWarning className="w-100 text-3xl bg-red-100 text-red-600 rounded-lg " />
+
+                    <h3
+                      className="text-lg leading-6 font-medium text-gray-900 ml-5 mt-1"
+                      id="modal-title"
+                    >
+                      {alertMessage}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button
+                  type="button"
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                  onClick={closeAlert}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative bg-white shadow-lg rounded-lg p-8 w-full max-w-md ">
         <h2 className="text-xl font-bold mb-4 text-center">Add a New Recipe</h2>
@@ -78,6 +163,7 @@ function AddRecipe({ profileData }) {
             <input
               type="text"
               id="inputLbl"
+              maxLength={150}
               value={inputLabel}
               onChange={(e) => setInputLabel(e.target.value)}
               className="border border-gray-300 rounded-md p-2"
@@ -94,6 +180,7 @@ function AddRecipe({ profileData }) {
             <input
               type="text"
               id="inputDT"
+              maxLength={150}
               value={inputDishType}
               onChange={(e) => setInputDishType(e.target.value)}
               className="border border-gray-300 rounded-md p-2"
@@ -110,6 +197,7 @@ function AddRecipe({ profileData }) {
             <input
               type="text"
               id="inputImg"
+              maxLength={255}
               value={inputImage}
               onChange={(e) => setInputImage(e.target.value)}
               className="border border-gray-300 rounded-md p-2"
@@ -128,6 +216,7 @@ function AddRecipe({ profileData }) {
               <input
                 type="text"
                 name="ingredient"
+                maxLength={250}
                 value={field.ingredient}
                 onChange={(event) => handleInputChange(index, event)}
                 placeholder="Ingredient"
@@ -137,6 +226,7 @@ function AddRecipe({ profileData }) {
                 type="text"
                 name="quantity"
                 value={field.quantity}
+                maxLength={250}
                 onChange={(event) => handleInputChange(index, event)}
                 placeholder="Quantity"
                 className="border border-gray-300 rounded-md p-2"
