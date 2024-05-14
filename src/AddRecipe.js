@@ -48,47 +48,65 @@ function AddRecipe() {
   };
 
   return (
-    <div>
-      <form>
-        <label htmlFor="inputLbl">Dish Name:</label>
-        <input
-          type="text"
-          id="inputLbl"
-          value={inputLabel}
-          onChange={(e) => setInputLabel(e.target.value)}
-        />
+    <div className="p-6">
+      <form className="space-y-4">
+        <div className="flex flex-col">
+          <label
+            htmlFor="inputLbl"
+            className="mb-2 block text-sm font-medium text-gray-700"
+          >
+            Dish Name:
+          </label>
+          <input
+            type="text"
+            id="inputLbl"
+            value={inputLabel}
+            onChange={(e) => setInputLabel(e.target.value)}
+            className="border border-gray-300 rounded-md p-2"
+          />
+        </div>
 
-        <label htmlFor="inputDT">Dish Type:</label>
-        <input
-          type="text"
-          id="inputDT"
-          value={inputDishType}
-          onChange={(e) => setInputDishType(e.target.value)}
-        />
+        <div className="flex flex-col">
+          <label
+            htmlFor="inputDT"
+            className="mb-2 block text-sm font-medium text-gray-700"
+          >
+            Dish Type:
+          </label>
+          <input
+            type="text"
+            id="inputDT"
+            value={inputDishType}
+            onChange={(e) => setInputDishType(e.target.value)}
+            className="border border-gray-300 rounded-md p-2"
+          />
+        </div>
 
-        <label htmlFor="inputImg">Dish Image:</label>
-        {/* <input
-          type="file"
-          alt="input image"
-          id="inputImg"
-          accept="image/*"
-          value={inputImage}
-          onChange={(e) => setInputImage(e.target.value)}
-        /> */}
-        <input
-          type="text"
-          id="inputImg"
-          value={inputImage}
-          onChange={(e) => setInputImage(e.target.value)}
-        />
+        <div className="flex flex-col">
+          <label
+            htmlFor="inputImg"
+            className="mb-2 block text-sm font-medium text-gray-700"
+          >
+            Dish Image:
+          </label>
+          <input
+            type="text"
+            id="inputImg"
+            value={inputImage}
+            onChange={(e) => setInputImage(e.target.value)}
+            className="border border-gray-300 rounded-md p-2"
+          />
+        </div>
+
         {fields.map((field, index) => (
-          <div key={index}>
+          <div key={index} className="flex flex-col space-y-2">
             <input
               type="text"
               name="ingredient"
               value={field.ingredient}
               onChange={(event) => handleInputChange(index, event)}
               placeholder="Ingredient"
+              className="border border-gray-300 rounded-md p-2"
             />
             <input
               type="text"
@@ -96,13 +114,24 @@ function AddRecipe() {
               value={field.quantity}
               onChange={(event) => handleInputChange(index, event)}
               placeholder="Quantity"
+              className="border border-gray-300 rounded-md p-2"
             />
           </div>
         ))}
-        <button type="button" onClick={() => handleAddFields()}>
+
+        <button
+          type="button"
+          onClick={() => handleAddFields()}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        >
           Add More Ingredients
         </button>
-        <button onClick={handleSubmit}>Save Recipe</button>
+        <button
+          onClick={handleSubmit}
+          className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+        >
+          Save Recipe
+        </button>
       </form>
     </div>
   );
