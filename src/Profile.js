@@ -9,6 +9,7 @@ import {
 import { Navigate } from "react-router-dom";
 import app from "./FirebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth"; // Import the necessary functions
+import { FaEllipsisH } from "react-icons/fa"; // Import the three-dot icon
 
 const Profile = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -35,6 +36,7 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [imageFile, setImageFile] = useState(null);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const [showMenu, setShowMenu] = useState(false); // State to handle the visibility of the dropdown menu
 
   useEffect(() => {
     const auth = getAuth(app);
@@ -88,6 +90,7 @@ const Profile = () => {
 
   const handleEditProfile = () => {
     setEditMode(true);
+    setShowMenu(false); // Close menu when edit is clicked
   };
 
   const handleSaveChanges = async () => {
@@ -174,6 +177,10 @@ const Profile = () => {
     }
   };
 
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       {redirectToLogin && <Navigate to="/Login" />}
@@ -209,7 +216,8 @@ const Profile = () => {
                     name="name"
                     value={editedProfileData.name}
                     onChange={handleChange}
-                    className="text-xl font-semibold border-b-2 px-2 py-1 focus:outline-none focus:border-blue-500 mb-4"
+                    className="text-xl font-semibold border-b-2 px-                 
+                    2 py-1 focus:outline-none focus:border-blue-500 mb-4"
                     placeholder="Name"
                   />
                   <input
@@ -237,34 +245,45 @@ const Profile = () => {
               )}
             </div>
             <div className="mt-8 flex justify-center">
-              {editMode ? (
+              {!editMode && (
+                <div className="relative">
+                  <button
+                    onClick={toggleMenu}
+                    className="text-gray-600 hover:text-gray-800 focus:outline-none"
+                  >
+                    <FaEllipsisH size={24} />
+                  </button>
+                  {showMenu && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-md">
+                      <button
+                        onClick={handleEditProfile}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        Edit Profile
+                      </button>
+                      <button
+                        onClick={handleDeleteProfile}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        Delete Profile
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+              {editMode && (
                 <>
                   <button
                     onClick={handleSaveChanges}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4 focus:outline-none focus:shadow-outline"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4 focus:outline-none focus:shadow-outline"
                   >
                     Save Changes
                   </button>
                   <button
                     onClick={handleCancelEdit}
-                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2 focus:outline-none focus:shadow-outline"
                   >
                     Cancel
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={handleEditProfile}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4 focus:outline-none focus:shadow-outline"
-                  >
-                    Edit Profile
-                  </button>
-                  <button
-                    onClick={handleDeleteProfile}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Delete Profile
                   </button>
                 </>
               )}
