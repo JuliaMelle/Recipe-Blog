@@ -14,33 +14,24 @@ import AddRecipe from "./AddRecipe";
 import Login from "./Login";
 import Profile from "./Profile";
 import PlaylistComponent from "./pages/YoutubeApi/PlaylistComponent";
-import { AuthProvider } from "./components/AuthContext";
-
 const App = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
-    <div className="bg-custom-cream min-h-screen font-sans">
-      <AuthProvider>
-        <Navbar />
-        <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/gourmetgatherings" element={<GourmetGatherings />} />
-          <Route path="/addrecipe" element={<AddRecipe />} />
-          <Route
-            path="/"
-            element={
-              <RecipeMain open={isDialogOpen} setOpen={setIsDialogOpen} />
-            }
-          />
-          <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
-          <Route path="/login" element={<Login />} />
-
-          <Route path="/profile" element={<Profile />} />
-          {/* <Route path="/logout" element={<Profile />} /> */}
-          <Route path="/ytRecipe" element={<PlaylistComponent />} />
-        </Routes>
-      </AuthProvider>
+    <div className="bg-blue-50 min-h-screen font-sans">
+      <Navbar />
+      <Routes>
+        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/"
+          element={<RecipeMain open={isDialogOpen} setOpen={setIsDialogOpen} />}
+        />
+        <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        {/* <Route path="/logout" element={<Profile />} /> */}
+        <Route path="/ytRecipe" element={<PlaylistComponent />} />
+      </Routes>
     </div>
   );
 };
