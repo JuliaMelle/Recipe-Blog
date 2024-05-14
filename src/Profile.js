@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { auth, database } from "./FirebaseConfig";
-import { ref, set, remove, onValue } from "firebase/database";
+import { getDatabase, ref, set, remove, onValue } from "firebase/database";
 import {
   getStorage,
   ref as storageRef,
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
-import { Navigate } from "react-router-dom"; // Import Redirect
+import { Navigate } from "react-router-dom";
+import app from "./FirebaseConfig";
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // Import the necessary functions
 
 const Profile = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -33,11 +34,13 @@ const Profile = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [imageFile, setImageFile] = useState(null);
-
-  const [redirectToLogin, setRedirectToLogin] = useState(false); // New state variable
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserEmail(user.email);
         const profileRef = ref(database, `profiles/${user.uid}`);
@@ -48,8 +51,6 @@ const Profile = () => {
             setEditedProfileData(data);
           } else {
             console.error("Profile data does not exist.");
-
-            // Set default values
             setProfileData({
               name: user.displayName || user.email,
               username: user.email,
@@ -69,7 +70,7 @@ const Profile = () => {
           setIsLoading(false);
         });
       } else {
-        setUserEmail(""); // Reset user email if not authenticated
+        setUserEmail("");
         setIsLoading(false);
       }
     });
@@ -93,15 +94,15 @@ const Profile = () => {
     setProfileData(editedProfileData);
     setEditMode(false);
 
-    // Check if the user is signed in
+    const database = getDatabase(app);
+    const auth = getAuth(app);
     const user = auth.currentUser;
+
     if (!user) {
       console.error("No user is currently signed in.");
-      // Handle case where no user is signed in
       return;
     }
 
-    // Reference to the database node where the profile data will be stored
     const profileRef = ref(database, `profiles/${user.uid}`);
 
     try {
@@ -109,16 +110,17 @@ const Profile = () => {
       console.log("Profile data saved successfully.");
     } catch (error) {
       console.error("Error saving profile data:", error);
-      // Handle error saving profile data
     }
 
-    // Upload new profile picture if an image file is selected
     if (imageFile) {
       const storage = getStorage();
-      const storageRef = ref(storage, `profilePictures/${user.uid}`);
+      const storageReference = storageRef(
+        storage,
+        `profilePictures/${user.uid}`
+      );
       try {
-        await uploadString(storageRef, imageFile, "data_url");
-        const imageUrl = await getDownloadURL(storageRef);
+        await uploadString(storageReference, imageFile, "data_url");
+        const imageUrl = await getDownloadURL(storageReference);
         setEditedProfileData((prevState) => ({
           ...prevState,
           profilePicture: imageUrl,
@@ -126,7 +128,6 @@ const Profile = () => {
         console.log("Profile picture uploaded successfully.");
       } catch (error) {
         console.error("Error uploading profile picture:", error);
-        // Handle error uploading profile picture
       }
     }
   };
@@ -152,34 +153,30 @@ const Profile = () => {
   };
 
   const handleDeleteProfile = async () => {
-    // Check if the user is signed in
+    const database = getDatabase(app);
+    const auth = getAuth(app);
     const user = auth.currentUser;
+
     if (!user) {
       console.error("No user is currently signed in.");
-      // Handle case where no user is signed in
       return;
     }
 
-    // Reference to the database node where the profile data is stored
     const profileRef = ref(database, `profiles/${user.uid}`);
 
     try {
       await remove(profileRef);
       console.log("Profile deleted successfully.");
-      // Optionally, sign out the user after deleting the profile
       auth.signOut();
-      // Set redirect state to true
       setRedirectToLogin(true);
     } catch (error) {
       console.error("Error deleting profile:", error);
-      // Handle error deleting profile
     }
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {redirectToLogin && <Navigate to="/Login" />}{" "}
-      {/* Render Redirect component */}
+      {redirectToLogin && <Navigate to="/Login" />}
       {isLoading ? (
         <p>Loading...</p>
       ) : (
