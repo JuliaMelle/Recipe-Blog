@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { database } from "./FirebaseConfig";
+import { db } from "./FirebaseConfig";
 import "./styles/index.css";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export default function Login() {
 
   // const LogIn = (e) => {
   //   e.preventDefault();
-  //   signInWithEmailAndPassword(database, email, password)
+  //   signInWithEmailAndPassword(db, email, password)
   //     .then((userCredential) => {
   //       console.log(userCredential);
   //     })
@@ -28,7 +28,7 @@ export default function Login() {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    signInWithEmailAndPassword(database, email, password).then((data) => {
+    signInWithEmailAndPassword(db, email, password).then((data) => {
       console.log(data, "authData");
       history("/recipe/:id");
     });
