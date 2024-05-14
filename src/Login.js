@@ -8,35 +8,93 @@ import logo from "../src/assets/iconLogo.png";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  // const LogIn = (e) => {
-  //   e.preventDefault();
-  //   signInWithEmailAndPassword(database, email, password)
-  //     .then((userCredential) => {
-  //       console.log(userCredential);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const history = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(e.target.email.value);
 
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    signInWithEmailAndPassword(database, email, password).then((data) => {
-      console.log(data, "authData");
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        database,
+        email,
+        password
+      );
+      console.log(userCredential, "authData");
       history("/recipe");
-    });
+    } catch (error) {
+      if (
+        error.code === "auth/wrong-password" ||
+        error.code === "auth/user-not-found"
+      ) {
+        setAlertMessage(
+          "Invalid credentials. Please check your email and password."
+        );
+      } else if (error.code === "auth/invalid-credential") {
+        setAlertMessage(
+          "Invalid email or password. Please make sure you entered them correctly."
+        );
+      } else {
+        console.error(error);
+      }
+      setAlertVisible(true);
+    }
+  };
+
+  const closeAlert = () => {
+    setAlertVisible(false);
   };
 
   return (
-    <div class="bg-[#EEE4B1] h-lvh">
+    <div className="bg-[#EEE4B1] h-lvh">
+      {alertVisible && (
+        <div
+          className="fixed z-10 inset-0 overflow-y-auto"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="min-h-screen pt-32 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+              aria-hidden="true"
+            ></div>
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3
+                      className="text-lg leading-6 font-medium text-gray-900"
+                      id="modal-title"
+                    >
+                      {alertMessage}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button
+                  type="button"
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                  onClick={closeAlert}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -69,8 +127,6 @@ export default function Login() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  // value={email}
-                  // onChange={(e) => setEmail(e.target.value)}
                   required
                   className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -92,8 +148,6 @@ export default function Login() {
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  // value={password}
-                  // onChange={(e) => setPassword(e.target.value)}
                   required
                   className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
