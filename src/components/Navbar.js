@@ -8,7 +8,8 @@ import { useLocation } from "react-router-dom"; // Import useLocation
 
 const navigation = [
   { name: "Recipe", href: "/", current: true },
-  { name: "Chef's Flix ", href: "/ytRecipe", current: false },
+  { name: "Chef's Flix", href: "/ytRecipe", current: false },
+  { name: "Community Recipes", href: "/gourmetgatherings", current: false },
   // { name: "Calendar", href: "#", current: false },
 ];
 

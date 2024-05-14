@@ -10,6 +10,7 @@ import Signup from "./Signup";
 import GourmetGatherings from "./GourmetGatherings";
 import RecipeMain from "./RecipeAPI/RecipeMain";
 import RecipeDetails from "./RecipeAPI/RecipeDetails";
+import AddRecipe from "./AddRecipe";
 import Login from "./Login";
 import Profile from "./Profile";
 import PlaylistComponent from "./pages/YoutubeApi/PlaylistComponent";
@@ -22,6 +23,7 @@ const App = () => {
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/gourmetgatherings" element={<GourmetGatherings />} />
+        <Route path="/addrecipe" element={<AddRecipe />} />
         <Route
           path="/"
           element={<RecipeMain open={isDialogOpen} setOpen={setIsDialogOpen} />}

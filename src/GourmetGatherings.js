@@ -2,51 +2,68 @@ import React, { useEffect, useState } from "react";
 import GourmetCard from "./GourmetCard";
 import GourmetDetails from "./GourmetDetails";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import app from "./FirebaseConfig";
+import { getDatabase, ref, get } from "firebase/database";
 
-const tempRecipeData = [
-  {
-    label: "Spaghetti Carborator",
-    dishType: "Pasta",
-    image: "https://i.imgflip.com/4ppvec.jpg",
-    ingredientLines: [
-      { ingredient: "Spaghetti", quantity: "200g" },
-      { ingredient: "Bacon", quantity: "100g" },
-      { ingredient: "Eggs", quantity: "2" },
-      { ingredient: "Parmesan Cheese", quantity: "50g" },
-      { ingredient: "Black Pepper", quantity: "to taste" },
-      { ingredient: "Garlic Cloves", quantity: "2" },
-      { ingredient: "Soy Sauce", quantity: "2 tbsp" },
-      { ingredient: "Sesame Oil", quantity: "1 tbsp" },
-      { ingredient: "Vegetable Oil", quantity: "2 tbsp" },
-      { ingredient: "Garlic Cloves", quantity: "2" },
-      { ingredient: "Soy Sauce", quantity: "2 tbsp" },
-      { ingredient: "Sesame Oil", quantity: "1 tbsp" },
-      { ingredient: "Vegetable Oil", quantity: "2 tbsp" },
-    ],
-    creator: "Chef A",
-  },
-  {
-    label: "You Telling Me A Chicken Fried This Stir?",
-    dishType: "Stir-Fry",
-    image:
-      "https://img.buzzfeed.com/buzzfeed-static/static/2019-11/15/17/tmp/bd533a881687/tmp-name-2-1053-1573839022-0_dblbig.jpg?resize=1200:*",
-    ingredientLines: [
-      { ingredient: "Chicken Breast", quantity: "300g" },
-      { ingredient: "Bell Pepper", quantity: "1" },
-      { ingredient: "Onion", quantity: "1" },
-      { ingredient: "Garlic Cloves", quantity: "2" },
-      { ingredient: "Soy Sauce", quantity: "2 tbsp" },
-      { ingredient: "Sesame Oil", quantity: "1 tbsp" },
-      { ingredient: "Vegetable Oil", quantity: "2 tbsp" },
-    ],
-    creator: "Chef B",
-  },
-];
+// const tempRecipeData = [
+//   {
+//     label: "Spaghetti Carborator",
+//     dishType: "Pasta",
+//     image: "https://i.imgflip.com/4ppvec.jpg",
+//     ingredientLines: [
+//       { ingredient: "Spaghetti", quantity: "200g" },
+//       { ingredient: "Bacon", quantity: "100g" },
+//       { ingredient: "Eggs", quantity: "2" },
+//       { ingredient: "Parmesan Cheese", quantity: "50g" },
+//       { ingredient: "Black Pepper", quantity: "to taste" },
+//       { ingredient: "Garlic Cloves", quantity: "2" },
+//       { ingredient: "Soy Sauce", quantity: "2 tbsp" },
+//       { ingredient: "Sesame Oil", quantity: "1 tbsp" },
+//       { ingredient: "Vegetable Oil", quantity: "2 tbsp" },
+//       { ingredient: "Garlic Cloves", quantity: "2" },
+//       { ingredient: "Soy Sauce", quantity: "2 tbsp" },
+//       { ingredient: "Sesame Oil", quantity: "1 tbsp" },
+//       { ingredient: "Vegetable Oil", quantity: "2 tbsp" },
+//     ],
+//     creator: "Chef A",
+//   },
+//   {
+//     label: "You Telling Me A Chicken Fried This Stir?",
+//     dishType: "Stir-Fry",
+//     image:
+//       "https://img.buzzfeed.com/buzzfeed-static/static/2019-11/15/17/tmp/bd533a881687/tmp-name-2-1053-1573839022-0_dblbig.jpg?resize=1200:*",
+//     ingredientLines: [
+//       { ingredient: "Chicken Breast", quantity: "300g" },
+//       { ingredient: "Bell Pepper", quantity: "1" },
+//       { ingredient: "Onion", quantity: "1" },
+//       { ingredient: "Garlic Cloves", quantity: "2" },
+//       { ingredient: "Soy Sauce", quantity: "2 tbsp" },
+//       { ingredient: "Sesame Oil", quantity: "1 tbsp" },
+//       { ingredient: "Vegetable Oil", quantity: "2 tbsp" },
+//     ],
+//     creator: "Chef B",
+//   },
+// ];
 
 export default function GourmetGatherings({ isDialogOpen, setIsDialogOpen }) {
   // const APP_ID = "b5e8ffaa";
   // const APP_KEY = "366c56854db11413d53540a02d074f37";
-  const [food_recipes, setfood_recipes] = useState(tempRecipeData);
+  const [food_recipes, setfood_recipes] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const db = getDatabase();
+      const dbRef = ref(db, "communityRecipes");
+      const snapshot = await get(dbRef);
+      if (snapshot.exists()) {
+        setfood_recipes(Object.values(snapshot.val()));
+      } else {
+        alert("No data available");
+      }
+    };
+
+    fetchData();
+  }, []);
   const [search_recipe, setSearch_recipe] = useState("");
   const [search_query, setSearch_Query] = useState("chicken");
   const [isLoading, setIsLoading] = useState(false);
@@ -119,7 +136,7 @@ export default function GourmetGatherings({ isDialogOpen, setIsDialogOpen }) {
             marginBottom: "10px",
           }}
         >
-          Community Recipes
+          Gourmet Gatherings
         </div>
         <form
           onSubmit={getSearchFunction}
@@ -157,6 +174,18 @@ export default function GourmetGatherings({ isDialogOpen, setIsDialogOpen }) {
                         focus:ring-offset-blue-700"
           >
             Search Recipe
+          </button>
+          <button
+            onClick={() => {
+              window.location.href = "/addrecipe";
+            }}
+            className="bg-red-500 hover:bg-red-600 focus:ring-2  
+                        focus:ring-blue-900 text-white font-semibold py-3 px-6  
+                        rounded-full transform hover:scale-105 transition-transform  
+                        focus:outline-none focus:ring-offset-2  
+                        focus:ring-offset-blue-700"
+          >
+            Add Recipe
           </button>
         </form>
       </div>
