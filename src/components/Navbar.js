@@ -1,10 +1,13 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import logo from "../assets/whitelogo.png";
 import { FaUser } from "react-icons/fa";
-import { useLocation } from "react-router-dom"; // Import useLocation
+import { useLocation } from "react-router-dom";
+import { useAuth } from "./AuthContext";
+import app from "../FirebaseConfig";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const navigation = [
   { name: "Recipe", href: "/", current: true },
@@ -16,21 +19,41 @@ const navigation = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-// HELLO
+
 export default function Navbar() {
-  // State to track if the user is signed in
-  const [isSignedIn, setIsSignedIn] = useState(true); // turn this into true to test if signed in
+  const { currentUser } = useAuth();
+  const location = useLocation();
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
-  const location = useLocation(); // Get the current location
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(getAuth(app), (user) => {
+      if (user) {
+        setIsSignedIn(true);
+      } else {
+        setIsSignedIn(false);
+      }
+    });
 
-  // Function to handle sign out
-  const handleSignOut = () => {
-    setIsSignedIn(false);
-  };
-  // Determine if the current navigation item is active
+    return () => unsubscribe();
+  }, []);
+
   const isActive = (item) => {
     return location.pathname === item.href;
   };
+
+  const handleSignOut = () => {
+    const auth = getAuth(app);
+    auth
+      .signOut()
+      .then(() => {
+        // Handle successful sign out
+      })
+      .catch((error) => {
+        // Handle errors here
+        console.error("Error signing out:", error);
+      });
+  };
+
   return (
     <Disclosure as="nav" className="bg-custom-purple">
       {({ open }) => (
