@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import GourmetDetails from "./GourmetDetails";
 
-const GourmetCard = ({ recipe }) => {
+const GourmetCard = ({ recipe, profileData, deleteRecipeItem }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false); // State variable to manage dialog open/close
 
   const openDialog = () => {
@@ -50,7 +50,12 @@ const GourmetCard = ({ recipe }) => {
       </div>
       <div style={{ position: "absolute", zIndex: "9999" }}>
         {isDialogOpen && (
-          <GourmetDetails closeDialog={closeDialog} recipez={recipe} />
+          <GourmetDetails
+            closeDialog={closeDialog}
+            recipez={recipe}
+            profileData={profileData}
+            deleteRecipeItem={deleteRecipeItem}
+          />
         )}{" "}
         {/* Pass closeDialog function as prop to GourmetDetails */}
       </div>
