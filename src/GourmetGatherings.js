@@ -53,9 +53,14 @@ export default function GourmetGatherings({
   deleteRecipeItem,
 }) {
   const [search_recipe, setSearch_recipe] = useState("");
-  const [search_query, setSearch_Query] = useState("chicken");
+  const [search_query, setSearch_Query] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    setSearchResults(food_recipes);
+  }, [food_recipes]);
 
   const updateSearchFunction = (e) => {
     setSearch_recipe(e.target.value);
@@ -64,23 +69,13 @@ export default function GourmetGatherings({
   const getSearchFunction = (e) => {
     e.preventDefault();
     setSearch_Query(search_recipe);
+    const filtered = food_recipes.filter((recipe) =>
+      recipe.label.toLowerCase().includes(search_recipe.toLowerCase())
+    );
+    setSearchResults(filtered);
     setSearch_recipe("");
   };
 
-  // const handleSearch = (e) => {
-  //   const searchText = e.target.value.toLowerCase();
-  //   if (searchText.length !== 0) {
-  //     const recipeResults = tempRecipeData.filter(
-  //       (item) =>
-  //         item.label.toLowerCase().startsWith(searchText) ||
-  //         item.dishType.toLowerCase().startsWith(searchText)
-  //     );
-  //     setSearchResults([...recipeResults]);
-  //   } else {
-  //     setSearchResults([]);
-  //   }
-  //   setSearch_Query(searchText);
-  //};
   return (
     <div className="min-h-screen font-sans">
       <div
@@ -156,20 +151,12 @@ export default function GourmetGatherings({
           )}
         </form>
       </div>
-      {/* <input
-        className="search"
-        type="text"
-        placeholder="Search for music..."
-        value={search_query}
-        onChange={handleSearch}
-        //onChange={(e) => setQuery(e.target.value)}
-      /> */}
       {/* <ul>
         {searchResults.map((item) => (
           <li key={item.label}>{item.label}</li>
         ))}
-      </ul> */}
-      {/* <Routes>
+      </ul>
+      <Routes>
         <Route
           path="/recipe/:id"
           element={<GourmetDetails recipez={food_recipes} />}
@@ -180,7 +167,7 @@ export default function GourmetGatherings({
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  
                 lg:grid-cols-4 gap-4"
         >
-          {food_recipes.map((recipe) => (
+          {searchResults.map((recipe) => (
             <GourmetCard
               key={recipe.label}
               recipe={recipe}
