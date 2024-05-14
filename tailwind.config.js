@@ -11,6 +11,7 @@ module.exports = {
         "custom-brown": "#8C6A5D",
         "custom-cream": "#EEE4B1",
         "custom-darkpurple": "#32012F",
+        "custom-coffee": "#5F374B",
         "card-color": "#FFFAE6",
       },
     },
