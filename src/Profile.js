@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { auth, database } from "./FirebaseConfig";
-import { ref, set, remove } from "firebase/database";
+import { ref, set, remove, onValue } from "firebase/database";
 import {
   getStorage,
   ref as storageRef,
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
+import { Navigate } from "react-router-dom"; // Import Redirect
 
 const Profile = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -33,31 +34,48 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [imageFile, setImageFile] = useState(null);
 
+  const [redirectToLogin, setRedirectToLogin] = useState(false); // New state variable
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUserEmail(user.email);
-        setProfileData((prevData) => ({
-          ...prevData,
-          name: user.email,
-          username: user.email,
-        }));
+        const profileRef = ref(database, `profiles/${user.uid}`);
+        onValue(profileRef, (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            setProfileData(data);
+            setEditedProfileData(data);
+          } else {
+            console.error("Profile data does not exist.");
+
+            // Set default values
+            setProfileData({
+              name: user.displayName || user.email,
+              username: user.email,
+              biography: "Student",
+              profilePicture:
+                "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/Seal_of_the_University_of_Santo_Tomas.svg/1200px-Seal_of_the_University_of_Santo_Tomas.svg.png",
+              postHistory: [],
+            });
+            setEditedProfileData({
+              name: user.displayName || user.email,
+              username: user.email,
+              biography: "Student",
+              profilePicture:
+                "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/Seal_of_the_University_of_Santo_Tomas.svg/1200px-Seal_of_the_University_of_Santo_Tomas.svg.png",
+            });
+          }
+          setIsLoading(false);
+        });
       } else {
         setUserEmail(""); // Reset user email if not authenticated
-        // Handle the case where the user is not logged in
+        setIsLoading(false);
       }
     });
 
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    // Set initial editedProfileData based on profileData only when profileData is loaded
-    if (profileData.name !== "") {
-      setEditedProfileData(profileData);
-      setIsLoading(false); // Profile data is loaded, no longer in loading state
-    }
-  }, [profileData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -150,6 +168,8 @@ const Profile = () => {
       console.log("Profile deleted successfully.");
       // Optionally, sign out the user after deleting the profile
       auth.signOut();
+      // Set redirect state to true
+      setRedirectToLogin(true);
     } catch (error) {
       console.error("Error deleting profile:", error);
       // Handle error deleting profile
@@ -158,6 +178,8 @@ const Profile = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {redirectToLogin && <Navigate to="/Login" />}{" "}
+      {/* Render Redirect component */}
       {isLoading ? (
         <p>Loading...</p>
       ) : (
@@ -165,13 +187,16 @@ const Profile = () => {
           <h2 className="text-2xl font-semibold mb-4">Profile</h2>
           <div>
             <div className="relative">
-              <img
-                src={editedProfileData.profilePicture}
-                alt={profileData.name}
-                className="w-32 h-32 rounded-full mx-auto mb-4 cursor-pointer"
-              />
+              <label htmlFor="profilePictureInput">
+                <img
+                  src={editedProfileData.profilePicture}
+                  alt={profileData.name}
+                  className="w-32 h-32 rounded-full mx-auto mb-4 cursor-pointer"
+                />
+              </label>
               {editMode && (
                 <input
+                  id="profilePictureInput"
                   type="file"
                   accept="image/*"
                   onChange={handlePictureChange}
@@ -251,12 +276,13 @@ const Profile = () => {
           <div className="mt-8">
             <h3 className="text-2xl font-semibold mb-4">Post History</h3>
             <div className="grid grid-cols-1 gap-4">
-              {profileData.postHistory.map((post) => (
-                <div key={post.id} className="bg-gray-100 p-4 rounded">
-                  <h4 className="text-lg font-semibold">{post.title}</h4>
-                  <p className="text-gray-600">Date: {post.date}</p>
-                </div>
-              ))}
+              {profileData.postHistory &&
+                profileData.postHistory.map((post) => (
+                  <div key={post.id} className="bg-gray-100 p-4 rounded">
+                    <h4 className="text-lg font-semibold">{post.title}</h4>
+                    <p className="text-gray-600">Date: {post.date}</p>
+                  </div>
+                ))}
             </div>
           </div>
         </>
