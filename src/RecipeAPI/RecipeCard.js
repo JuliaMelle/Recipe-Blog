@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Import the Link component
 import "../styles/index.css";
 const RecipeCard = ({ recipe, setIsDialogOpen }) => {
+  const { label, image } = recipe?.recipe || {};
+
   console.log(recipe);
   if (!recipe) {
     return <div>Loading...</div>; // Or return null, or some placeholder content
