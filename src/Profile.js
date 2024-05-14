@@ -10,176 +10,196 @@ import { Navigate } from "react-router-dom";
 import app from "./FirebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth"; // Import the necessary functions
 import { FaEllipsisH } from "react-icons/fa"; // Import the three-dot icon
+import GourmetCard from "./GourmetCard";
 
-const Profile = () => {
-  const [userEmail, setUserEmail] = useState("");
-  const [profileData, setProfileData] = useState({
-    name: "",
-    username: "",
-    biography: "",
-    profilePicture:
-      "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/Seal_of_the_University_of_Santo_Tomas.svg/1200px-Seal_of_the_University_of_Santo_Tomas.svg.png",
-    postHistory: [
-      { id: 1, title: "Post 1", date: "2024-05-09" },
-      { id: 2, title: "Post 2", date: "2024-05-08" },
-    ],
-  });
+const Profile = ({
+  userEmail,
+  setUserEmail,
+  profileData,
+  setProfileData,
+  redirectToLogin,
+  isLoading,
+  editedProfileData,
+  editMode,
+  handlePictureChange,
+  handleChange,
+  handleSaveChanges,
+  handleCancelEdit,
+  handleEditProfile,
+  handleDeleteProfile,
+  toggleMenu,
+  showMenu,
+  food_recipes,
+  deleteRecipeItem,
+}) => {
+  // const [userEmail, setUserEmail] = useState("");
+  // const [profileData, setProfileData] = useState({
+  //   name: "",
+  //   username: "",
+  //   biography: "",
+  //   profilePicture:
+  //     "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/Seal_of_the_University_of_Santo_Tomas.svg/1200px-Seal_of_the_University_of_Santo_Tomas.svg.png",
+  //   postHistory: [
+  //     { id: 1, title: "Post 1", date: "2024-05-09" },
+  //     { id: 2, title: "Post 2", date: "2024-05-08" },
+  //   ],
+  // });
 
-  const [editMode, setEditMode] = useState(false);
-  const [editedProfileData, setEditedProfileData] = useState({
-    name: "",
-    username: "",
-    biography: "",
-    profilePicture: "",
-  });
+  // const [editMode, setEditMode] = useState(false);
+  // const [editedProfileData, setEditedProfileData] = useState({
+  //   name: "",
+  //   username: "",
+  //   biography: "",
+  //   profilePicture: "",
+  // });
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [imageFile, setImageFile] = useState(null);
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const [showMenu, setShowMenu] = useState(false); // State to handle the visibility of the dropdown menu
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [imageFile, setImageFile] = useState(null);
+  // const [redirectToLogin, setRedirectToLogin] = useState(false);
+  // const [showMenu, setShowMenu] = useState(false); // State to handle the visibility of the dropdown menu
 
-  useEffect(() => {
-    const auth = getAuth(app);
-    const database = getDatabase(app);
+  // useEffect(() => {
+  //   const auth = getAuth(app);
+  //   const database = getDatabase(app);
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserEmail(user.email);
-        const profileRef = ref(database, `profiles/${user.uid}`);
-        onValue(profileRef, (snapshot) => {
-          if (snapshot.exists()) {
-            const data = snapshot.val();
-            setProfileData(data);
-            setEditedProfileData(data);
-          } else {
-            console.error("Profile data does not exist.");
-            setProfileData({
-              name: user.displayName || user.email,
-              username: user.email,
-              biography: "Student",
-              profilePicture:
-                "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/Seal_of_the_University_of_Santo_Tomas.svg/1200px-Seal_of_the_University_of_Santo_Tomas.svg.png",
-              postHistory: [],
-            });
-            setEditedProfileData({
-              name: user.displayName || user.email,
-              username: user.email,
-              biography: "Student",
-              profilePicture:
-                "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/Seal_of_the_University_of_Santo_Tomas.svg/1200px-Seal_of_the_University_of_Santo_Tomas.svg.png",
-            });
-          }
-          setIsLoading(false);
-        });
-      } else {
-        setUserEmail("");
-        setIsLoading(false);
-      }
-    });
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       setUserEmail(user.email);
+  //       const profileRef = ref(database, `profiles/${user.uid}`);
+  //       onValue(profileRef, (snapshot) => {
+  //         if (snapshot.exists()) {
+  //           const data = snapshot.val();
+  //           setProfileData(data);
+  //           setEditedProfileData(data);
+  //         } else {
+  //           console.error("Profile data does not exist.");
+  //           setProfileData({
+  //             name: user.displayName || user.email,
+  //             username: user.email,
+  //             biography: "Student",
+  //             profilePicture:
+  //               "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/Seal_of_the_University_of_Santo_Tomas.svg/1200px-Seal_of_the_University_of_Santo_Tomas.svg.png",
+  //             postHistory: [],
+  //           });
+  //           setEditedProfileData({
+  //             name: user.displayName || user.email,
+  //             username: user.email,
+  //             biography: "Student",
+  //             profilePicture:
+  //               "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/Seal_of_the_University_of_Santo_Tomas.svg/1200px-Seal_of_the_University_of_Santo_Tomas.svg.png",
+  //           });
+  //         }
+  //         setIsLoading(false);
+  //       });
+  //     } else {
+  //       setUserEmail("");
+  //       setIsLoading(false);
+  //     }
+  //   });
 
-    return () => unsubscribe();
-  }, []);
+  //   return () => unsubscribe();
+  // }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditedProfileData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setEditedProfileData((prevState) => ({
+  //     ...prevState,
+  //     [name]: value,
+  //   }));
+  // };
 
-  const handleEditProfile = () => {
-    setEditMode(true);
-    setShowMenu(false); // Close menu when edit is clicked
-  };
+  // const handleEditProfile = () => {
+  //   setEditMode(true);
+  //   setShowMenu(false); // Close menu when edit is clicked
+  // };
 
-  const handleSaveChanges = async () => {
-    setProfileData(editedProfileData);
-    setEditMode(false);
+  // const handleSaveChanges = async () => {
+  //   setProfileData(editedProfileData);
+  //   setEditMode(false);
 
-    const database = getDatabase(app);
-    const auth = getAuth(app);
-    const user = auth.currentUser;
+  //   const database = getDatabase(app);
+  //   const auth = getAuth(app);
+  //   const user = auth.currentUser;
 
-    if (!user) {
-      console.error("No user is currently signed in.");
-      return;
-    }
+  //   if (!user) {
+  //     console.error("No user is currently signed in.");
+  //     return;
+  //   }
 
-    const profileRef = ref(database, `profiles/${user.uid}`);
+  //   const profileRef = ref(database, `profiles/${user.uid}`);
 
-    try {
-      await set(profileRef, editedProfileData);
-      console.log("Profile data saved successfully.");
-    } catch (error) {
-      console.error("Error saving profile data:", error);
-    }
+  //   try {
+  //     await set(profileRef, editedProfileData);
+  //     console.log("Profile data saved successfully.");
+  //   } catch (error) {
+  //     console.error("Error saving profile data:", error);
+  //   }
 
-    if (imageFile) {
-      const storage = getStorage();
-      const storageReference = storageRef(
-        storage,
-        `profilePictures/${user.uid}`
-      );
-      try {
-        await uploadString(storageReference, imageFile, "data_url");
-        const imageUrl = await getDownloadURL(storageReference);
-        setEditedProfileData((prevState) => ({
-          ...prevState,
-          profilePicture: imageUrl,
-        }));
-        console.log("Profile picture uploaded successfully.");
-      } catch (error) {
-        console.error("Error uploading profile picture:", error);
-      }
-    }
-  };
+  //   if (imageFile) {
+  //     const storage = getStorage();
+  //     const storageReference = storageRef(
+  //       storage,
+  //       `profilePictures/${user.uid}`
+  //     );
+  //     try {
+  //       await uploadString(storageReference, imageFile, "data_url");
+  //       const imageUrl = await getDownloadURL(storageReference);
+  //       setEditedProfileData((prevState) => ({
+  //         ...prevState,
+  //         profilePicture: imageUrl,
+  //       }));
+  //       console.log("Profile picture uploaded successfully.");
+  //     } catch (error) {
+  //       console.error("Error uploading profile picture:", error);
+  //     }
+  //   }
+  // };
 
-  const handleCancelEdit = () => {
-    setEditedProfileData(profileData);
-    setEditMode(false);
-  };
+  // const handleCancelEdit = () => {
+  //   setEditedProfileData(profileData);
+  //   setEditMode(false);
+  // };
 
-  const handlePictureChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setEditedProfileData((prevState) => ({
-          ...prevState,
-          profilePicture: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handlePictureChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setImageFile(file);
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setEditedProfileData((prevState) => ({
+  //         ...prevState,
+  //         profilePicture: reader.result,
+  //       }));
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
-  const handleDeleteProfile = async () => {
-    const database = getDatabase(app);
-    const auth = getAuth(app);
-    const user = auth.currentUser;
+  // const handleDeleteProfile = async () => {
+  //   const database = getDatabase(app);
+  //   const auth = getAuth(app);
+  //   const user = auth.currentUser;
 
-    if (!user) {
-      console.error("No user is currently signed in.");
-      return;
-    }
+  //   if (!user) {
+  //     console.error("No user is currently signed in.");
+  //     return;
+  //   }
 
-    const profileRef = ref(database, `profiles/${user.uid}`);
+  //   const profileRef = ref(database, `profiles/${user.uid}`);
 
-    try {
-      await remove(profileRef);
-      console.log("Profile deleted successfully.");
-      auth.signOut();
-      setRedirectToLogin(true);
-    } catch (error) {
-      console.error("Error deleting profile:", error);
-    }
-  };
+  //   try {
+  //     await remove(profileRef);
+  //     console.log("Profile deleted successfully.");
+  //     auth.signOut();
+  //     setRedirectToLogin(true);
+  //   } catch (error) {
+  //     console.error("Error deleting profile:", error);
+  //   }
+  // };
 
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
-  };
+  // const toggleMenu = () => {
+  //   setShowMenu(!showMenu);
+  // };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -292,12 +312,22 @@ const Profile = () => {
           <div className="mt-8">
             <h3 className="text-2xl font-semibold mb-4">Post History</h3>
             <div className="grid grid-cols-1 gap-4">
-              {profileData.postHistory &&
+              {/* {profileData.postHistory &&
                 profileData.postHistory.map((post) => (
                   <div key={post.id} className="bg-gray-100 p-4 rounded">
                     <h4 className="text-lg font-semibold">{post.title}</h4>
                     <p className="text-gray-600">Date: {post.date}</p>
                   </div>
+                ))} */}
+              {food_recipes
+                .filter((recipe) => recipe.creator === profileData.username)
+                .map((recipe) => (
+                  <GourmetCard
+                    key={recipe.label}
+                    recipe={recipe}
+                    profileData={profileData}
+                    deleteRecipeItem={deleteRecipeItem}
+                  />
                 ))}
             </div>
           </div>

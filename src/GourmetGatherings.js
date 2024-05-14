@@ -45,58 +45,17 @@ import { getDatabase, ref, get } from "firebase/database";
 //   },
 // ];
 
-export default function GourmetGatherings({ isDialogOpen, setIsDialogOpen }) {
-  // const APP_ID = "b5e8ffaa";
-  // const APP_KEY = "366c56854db11413d53540a02d074f37";
-  const [food_recipes, setfood_recipes] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const db = getDatabase();
-      const dbRef = ref(db, "communityRecipes");
-      const snapshot = await get(dbRef);
-      if (snapshot.exists()) {
-        setfood_recipes(Object.values(snapshot.val()));
-      } else {
-        alert("No data available");
-      }
-    };
-
-    fetchData();
-  }, []);
+export default function GourmetGatherings({
+  userEmail,
+  profileData,
+  food_recipes,
+  setfood_recipes,
+  deleteRecipeItem,
+}) {
   const [search_recipe, setSearch_recipe] = useState("");
   const [search_query, setSearch_Query] = useState("chicken");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  //const [searchResults, setSearchResults] = useState([]);
-
-  // useEffect(() => {
-  //   getRecipesFunction();
-  // }, [search_query]);
-
-  // const getRecipesFunction = async () => {
-  //   setIsLoading(true);
-  //   setError(null);
-  //   try {
-  //     const response = await fetch(
-  //       `https://api.edamam.com/search?q=${search_query}&app_id=${APP_ID}&app_key=${APP_KEY}`
-  //     );
-  //     if (!response.ok) {
-  //       throw new Error(`API request failed with status ${response.status}`);
-  //     }
-  //     const data = await response.json();
-  //     if (Array.isArray(data.hits)) {
-  //       setfood_recipes(data.hits);
-  //       console.log(data);
-  //     } else {
-  //       setError("Unexpected response structure");
-  //     }
-  //   } catch (error) {
-  //     setError(error.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const updateSearchFunction = (e) => {
     setSearch_recipe(e.target.value);
@@ -123,7 +82,7 @@ export default function GourmetGatherings({ isDialogOpen, setIsDialogOpen }) {
   //   setSearch_Query(searchText);
   //};
   return (
-    <div className="bg-blue-50 min-h-screen font-sans">
+    <div className="min-h-screen font-sans">
       <div
         className="container mx-auto mt-8 p-4  
                             sm:px-6 lg:px-8"
@@ -134,17 +93,19 @@ export default function GourmetGatherings({ isDialogOpen, setIsDialogOpen }) {
             fontSize: "40px",
             fontFamily: "Gothic",
             marginBottom: "10px",
+            fontWeight: "bolder",
+            color: "#5F374B",
           }}
         >
           Gourmet Gatherings
         </div>
         <form
           onSubmit={getSearchFunction}
-          className="bg-white p-4 sm:p-6  
-                               lg:p-8 rounded-lg shadow-md  
-                               flex flex-col sm:flex-row items-center  
-                               justify-center space-y-4 sm:space-y-0  
-                               sm:space-x-4"
+          className="bg-card-color p-4 sm:p-6  
+          lg:p-8 rounded-lg shadow-md  
+          flex flex-col sm:flex-row items-center  
+          justify-center space-y-4 sm:space-y-0  
+          sm:space-x-4"
         >
           <div
             className="relative justify-center flex-grow 
@@ -156,37 +117,43 @@ export default function GourmetGatherings({ isDialogOpen, setIsDialogOpen }) {
               value={search_recipe}
               onChange={updateSearchFunction}
               placeholder="Search for recipes..."
-              className="w-full py-3 px-4 bg-gray-100  
-                                       border border-blue-300 focus:ring-blue-500  
-                                       focus:border-blue-500 rounded-full  
-                                       text-gray-700 outline-none transition-colors  
-                                       duration-200 ease-in-out focus:ring-2  
-                                       focus:ring-blue-900 focus:bg-transparent  
-                                       focus:shadow-md"
+              className="w-full py-3 px-4 bg-[#FFFDD7] placeholder-purple
+              border border-custom-cream focus:ring-custom-purple  
+              focus:border-custom-darkpurple rounded-full  
+              text-custom-darkpurple outline-none transition-colors  
+              duration-200 ease-in-out focus:ring-2  
+              focus:ring-custom-purple focus:bg-transparent  
+              focus:shadow-md"
             />
           </div>
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 focus:ring-2  
-                        focus:ring-blue-900 text-white font-semibold py-3 px-6  
-                        rounded-full transform hover:scale-105 transition-transform  
-                        focus:outline-none focus:ring-offset-2  
-                        focus:ring-offset-blue-700"
+            className="bg-custom-purple hover:bg-custom-darkpurple focus:ring-2  
+            focus:ring-custom-purple text-white font-semibold py-3 px-6  
+            rounded-full transform hover:scale-105 transition-transform  
+            focus:outline-none focus:ring-offset-2  
+            focus:ring-offset-custom-purple"
+            onClick={() => console.log(profileData.biography)}
           >
             Search Recipe
           </button>
-          <button
-            onClick={() => {
-              window.location.href = "/addrecipe";
-            }}
-            className="bg-red-500 hover:bg-red-600 focus:ring-2  
+          {profileData.username && (
+            <button
+              onClick={() => {
+                window.location.href = "/addrecipe";
+              }}
+              className="hover:bg-red-600 focus:ring-2  
                         focus:ring-blue-900 text-white font-semibold py-3 px-6  
                         rounded-full transform hover:scale-105 transition-transform  
                         focus:outline-none focus:ring-offset-2  
                         focus:ring-offset-blue-700"
-          >
-            Add Recipe
-          </button>
+              style={{
+                backgroundColor: "#5F374B",
+              }}
+            >
+              Add Recipe
+            </button>
+          )}
         </form>
       </div>
       {/* <input
@@ -214,7 +181,12 @@ export default function GourmetGatherings({ isDialogOpen, setIsDialogOpen }) {
                 lg:grid-cols-4 gap-4"
         >
           {food_recipes.map((recipe) => (
-            <GourmetCard key={recipe.label} recipe={recipe} />
+            <GourmetCard
+              key={recipe.label}
+              recipe={recipe}
+              profileData={profileData}
+              deleteRecipeItem={deleteRecipeItem}
+            />
           ))}
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import app from "./FirebaseConfig";
 import { getDatabase, ref, set, push } from "firebase/database";
 
-function AddRecipe() {
+function AddRecipe({ profileData }) {
   const [inputLabel, setInputLabel] = useState("");
   const [inputDishType, setInputDishType] = useState("");
   const [inputImage, setInputImage] = useState("");
@@ -19,18 +19,26 @@ function AddRecipe() {
       dishType: inputDishType,
       image: inputImage,
       ingredientLines: fields,
-      creator: "mah name chef",
+      creator: profileData.username,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setTempRecipeData([...tempRecipeData, ...fields]);
-    setFields([{ ingredient: "", quantity: "" }]);
-    setInputLabel("");
-    setInputDishType("");
-    setInputImage("");
-    saveData();
+    // Show a confirmation dialog
+    const userResponse = window.confirm(
+      "Are you sure you want to save the recipe? You will never be able to change it after submission."
+    );
+
+    // If the user clicks "OK", save the recipe
+    if (userResponse) {
+      setTempRecipeData([...tempRecipeData, ...fields]);
+      setFields([{ ingredient: "", quantity: "" }]);
+      setInputLabel("");
+      setInputDishType("");
+      setInputImage("");
+      saveData();
+    }
   };
 
   const handleInputChange = (index, event) => {
