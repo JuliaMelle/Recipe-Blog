@@ -1,0 +1,60 @@
+/* Container for the first picture */
+.first-pic-container {
+  display: flex; /* Arrange items horizontally */
+  align-items: center; /* Center items vertically */
+  padding: 20px; /* Space inside the container */
+  background-color: #f9f9f9; /* Light background color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin: 20px; /* Space outside the container */
+}
+
+/* Style for the image */
+.pic {
+  max-width: 100%; /* Ensure image doesn't overflow container */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 10px; /* Rounded corners for the image */
+  margin-right: 20px; /* Space between image and text */
+}
+
+/* Style for the info section */
+.info {
+  max-width: 600px; /* Limit width of the text */
+  font-family: Arial, sans-serif; /* Font choice */
+  color: #333; /* Dark text color for readability */
+}
+
+/* Headings and paragraph styles */
+.info h1 {
+  font-size: 2em; /* Large heading */
+  margin-bottom: 10px; /* Space below heading */
+}
+
+.info p {
+  font-size: 1.2em; /* Slightly larger than default */
+  line-height: 1.5; /* Increase line height for readability */
+  margin-top: 0; /* Remove top margin */
+}
+
+/* src/components/ItemList.css */
+.item-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
