@@ -7,29 +7,43 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Signup from "./Signup";
+import GourmetGatherings from "./GourmetGatherings";
 import RecipeMain from "./RecipeAPI/RecipeMain";
 import RecipeDetails from "./RecipeAPI/RecipeDetails";
+import AddRecipe from "./AddRecipe";
 import Login from "./Login";
 import Profile from "./Profile";
 import PlaylistComponent from "./pages/YoutubeApi/PlaylistComponent";
+import { AuthProvider } from "./components/AuthContext";
+import { IndexPage } from "../Main/Home";
+
 const App = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <div className="bg-custom-cream min-h-screen font-sans">
-      <Navbar />
-      <Routes>
-        <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/"
-          element={<RecipeMain open={isDialogOpen} setOpen={setIsDialogOpen} />}
-        />
-        <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-        {/* <Route path="/logout" element={<Profile />} /> */}
-        <Route path="/ytRecipe" element={<PlaylistComponent />} />
-      </Routes>
+      <AuthProvider>
+        <Navbar />
+        <Routes>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/gourmetgatherings" element={<GourmetGatherings />} />
+          <Route path="/addrecipe" element={<AddRecipe />} />
+          <Route path="/" element={<IndexPage />} />
+
+          <Route
+            path="/recipe"
+            element={
+              <RecipeMain open={isDialogOpen} setOpen={setIsDialogOpen} />
+            }
+          />
+          <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
+          <Route path="/login" element={<Login />} />
+
+          <Route path="/profile" element={<Profile />} />
+          {/* <Route path="/logout" element={<Profile />} /> */}
+          <Route path="/ytRecipe" element={<PlaylistComponent />} />
+        </Routes>
+      </AuthProvider>
     </div>
   );
 };

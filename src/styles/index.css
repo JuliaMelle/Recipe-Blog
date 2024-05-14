@@ -20,3 +20,23 @@ code {
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+.alert {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #f44336; /* Red */
+  color: white;
+  opacity: 1;
+  transition: opacity 0.6s;
+}
+
+.alert-danger {
+  background-color: #f44336;
+}
+
+.btn-close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
