@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../src/assets/iconLogo.png";
 import background from "../src/assets/background2.jpg";
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
+import { CiWarning } from "react-icons/ci";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -80,8 +81,10 @@ export default function Login() {
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <CiWarning className="w-100 text-3xl bg-red-100 text-red-600 rounded-lg " />
+
                     <h3
-                      className="text-lg leading-6 font-medium text-gray-900"
+                      className="text-lg leading-6 font-medium text-gray-900 ml-5 mt-1"
                       id="modal-title"
                     >
                       {alertMessage}
