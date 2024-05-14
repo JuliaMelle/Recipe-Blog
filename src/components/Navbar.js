@@ -10,7 +10,7 @@ import app from "../FirebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const navigation = [
-  { name: "Recipe", href: "/", current: true },
+  { name: "Recipe", href: "/recipe", current: true },
   { name: "Chef's Flix", href: "/ytRecipe", current: false },
   { name: "Community Recipes", href: "/gourmetgatherings", current: false },
   // { name: "Calendar", href: "#", current: false },
@@ -72,37 +72,38 @@ export default function Navbar() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-12 w-auto hidden lg:block md:block"
-                    src={logo}
-                    alt="Gourmetgathering"
-                  />
-                </div>
-                <div className="hidden sm:ml-6 sm:mt-2 sm:block">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          isActive(item)
-                            ? "bg-[#32012F] text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+
+              {/* Conditionally render profile dropdown or sign-up/login options */}
+              {isSignedIn ? (
+                <>
+                  <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                    <div className="flex flex-shrink-0 items-center">
+                      <img
+                        className="h-12 w-auto hidden lg:block md:block"
+                        src={logo}
+                        alt="Gourmetgathering"
+                      />
+                    </div>
+                    <div className="hidden sm:ml-6 sm:mt-2 sm:block">
+                      <div className="flex space-x-4">
+                        {navigation.map((item) => (
+                          <a
+                            key={item.name}
+                            href={item.href}
+                            className={classNames(
+                              isActive(item)
+                                ? "bg-[#32012F] text-white"
+                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                              "rounded-md px-3 py-2 text-sm font-medium"
+                            )}
+                            aria-current={item.current ? "page" : undefined}
+                          >
+                            {item.name}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* Conditionally render profile dropdown or sign-up/login options */}
-                {isSignedIn ? (
                   <Menu as="div" className="relative ml-3">
                     {/* Profile dropdown */}
                     <div>
@@ -166,23 +167,34 @@ export default function Navbar() {
                       </Menu.Items>
                     </Transition>
                   </Menu>
-                ) : (
-                  <div className="flex items-center">
-                    <Link
-                      to="/signup"
-                      className="ml-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                    >
-                      Sign up
-                    </Link>
-                    <a
-                      href="/login"
-                      className="ml-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                    >
-                      Login
-                    </a>
+                </>
+              ) : (
+                <>
+                  <div className="flex flex-shrink-0 items-center">
+                    <img
+                      className="h-12 w-auto hidden lg:block md:block"
+                      src={logo}
+                      alt="Gourmetgathering"
+                    />
                   </div>
-                )}
-              </div>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <div className="flex items-center">
+                      <Link
+                        to="/signup"
+                        className="ml-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                      >
+                        Sign up
+                      </Link>
+                      <a
+                        href="/login"
+                        className="ml-4 text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                      >
+                        Login
+                      </a>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 

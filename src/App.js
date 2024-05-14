@@ -15,7 +15,7 @@ import Login from "./Login";
 import Profile from "./Profile";
 import PlaylistComponent from "./pages/YoutubeApi/PlaylistComponent";
 import { AuthProvider } from "./components/AuthContext";
-
+import { IndexPage } from "./pages/IndexPage";
 const App = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -27,8 +27,10 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/gourmetgatherings" element={<GourmetGatherings />} />
           <Route path="/addrecipe" element={<AddRecipe />} />
+          <Route path="/" element={<IndexPage />} />
+
           <Route
-            path="/"
+            path="/recipe"
             element={
               <RecipeMain open={isDialogOpen} setOpen={setIsDialogOpen} />
             }
