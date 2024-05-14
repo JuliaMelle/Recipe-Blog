@@ -1,13 +1,14 @@
 // src/components/ItemList.js
 import React, { useEffect, useState } from "react";
-import { ref, onValue } from "firebase/database";
-import { database } from "./FirebaseConfig";
+import { ref, onValue, getDatabase } from "firebase/database";
+import app from "../../FirebaseConfig";
 import { useNavigate } from "react-router-dom";
 import "./Index.css"; // Make sure to create this file for styling
 
 function ItemList() {
   const [items, setItems] = useState([]);
   const navigate = useNavigate();
+  const database = getDatabase(app);
 
   useEffect(() => {
     const itemsRef = ref(database, "items/");

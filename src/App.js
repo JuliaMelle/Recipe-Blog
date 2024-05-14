@@ -15,7 +15,7 @@ import Login from "./Login";
 import Profile from "./Profile";
 import PlaylistComponent from "./pages/YoutubeApi/PlaylistComponent";
 import { AuthProvider } from "./components/AuthContext";
-import { IndexPage } from "../Main/Home";
+import IndexPage from "./pages/Main/Home";
 
 const App = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
