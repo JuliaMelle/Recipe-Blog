@@ -31,7 +31,7 @@ export default function Login() {
 
     signInWithEmailAndPassword(database, email, password).then((data) => {
       console.log(data, "authData");
-      history("/recipe/:id");
+      history("/recipe");
     });
   };
 
