@@ -256,7 +256,6 @@ const App = () => {
             element={<AddRecipe profileData={profileData} />}
           />
           <Route path="/" element={<IndexPage />} />
-
           <Route
             path="/recipe"
             element={

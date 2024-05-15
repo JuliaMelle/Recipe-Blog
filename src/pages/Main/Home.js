@@ -1,8 +1,7 @@
 import React from "react";
 import "./Index.css";
-import ItemList from "./FetchData";
-import ItemDetail from "./ItemDetail"; // Create this component to show item details
 import assets from "./ad.png";
+import RecipeList from "./GourmetDisplay";
 
 function IndexPage() {
   return (
@@ -21,10 +20,18 @@ function IndexPage() {
             <br /> Come hungry, leave inspired!
           </p>
         </div>
-        <div className="Comps">
-          <ItemList />
-          <ItemDetail />
-        </div>
+      </div>
+      <div>
+        <RecipeList />
+      </div>
+      <div className="footer">
+        <section className="footer-subscription">
+          <p className="footer-heading">Presented to you by Group 7</p>
+          <p className="footer-text">
+            Miguel Fajardo, Marshal Thomas Draico T. Gallardo, Arianne Ashley
+            Manaog, Julia Melle T. Pascua, Richwin Kyle Reyes
+          </p>
+        </section>
       </div>
     </div>
   );

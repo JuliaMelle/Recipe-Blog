@@ -5,8 +5,9 @@
   padding: 20px; /* Space inside the container */
   background-color: #f9f9f9; /* Light background color */
   border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   margin: 20px; /* Space outside the container */
+  background-color: rgba(249, 249, 249, 0.5); /* Semi-transparent background */
+  margin-top: 50px;
 }
 
 /* Style for the image */
@@ -19,9 +20,9 @@
 
 /* Style for the info section */
 .info {
-  max-width: 600px; /* Limit width of the text */
-  font-family: Arial, sans-serif; /* Font choice */
-  color: #333; /* Dark text color for readability */
+  max-width: 600px;
+  font-family: Arial, sans-serif;
+  color: #333;
 }
 
 /* Headings and paragraph styles */
@@ -30,31 +31,35 @@
   margin-bottom: 10px; /* Space below heading */
 }
 
-.info p {
-  font-size: 1.2em; /* Slightly larger than default */
-  line-height: 1.5; /* Increase line height for readability */
-  margin-top: 0; /* Remove top margin */
+.center-container {
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
-/* src/components/ItemList.css */
-.item-list {
+.footer-container {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 4rem 0 2rem 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
 }
 
-.item {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  width: 200px;
+.footer-subcription {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
+  margin-bottom: 24px;
+  padding: 24px;
 }
 
-.item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.footer-subscription-heading {
+  margin-bottom: 24px;
+  font-size: 24px;
+}
+
+.footer-subscription-text {
+  margin-bottom: 24px;
+  font-size: 20px;
 }
