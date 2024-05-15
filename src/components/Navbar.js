@@ -46,6 +46,7 @@ export default function Navbar() {
     auth
       .signOut()
       .then(() => {
+        window.location.href = "/";
         // Handle successful sign out
       })
       .catch((error) => {

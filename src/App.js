@@ -255,7 +255,7 @@ const App = () => {
             path="/addrecipe"
             element={<AddRecipe profileData={profileData} />}
           />
-          <Route path="/" element={<IndexPage />} />
+          <Route path="/index" element={<IndexPage />} />
           <Route
             path="/recipe"
             element={
@@ -263,7 +263,9 @@ const App = () => {
             }
           />
           <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
+          <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
+
           <Route
             path="/favorite-page"
             element={<FavoritePage setOpen={setIsDialogOpen} />}

@@ -52,8 +52,7 @@ function AddRecipe({ profileData }) {
     // Check if all inputs match the no special characters regex
     if (
       !noSpecialCharsRegex.test(inputLabel) ||
-      !noSpecialCharsRegex.test(inputDishType) ||
-      !noSpecialCharsRegex.test(inputImage)
+      !noSpecialCharsRegex.test(inputDishType)
     ) {
       setAlertMessage(
         "Special characters are not allowed in dish name, dish type, and image link."
