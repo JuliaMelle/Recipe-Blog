@@ -1,5 +1,7 @@
 // FavoriteButton.js
 import React from "react";
+import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 
 const FavoriteButton = ({ recipeId, isFavorite, onToggleFavorite }) => {
   const handleClick = (event) => {
@@ -11,10 +13,14 @@ const FavoriteButton = ({ recipeId, isFavorite, onToggleFavorite }) => {
     <button
       onClick={handleClick}
       className={`p-2 rounded-full ${
-        isFavorite ? "bg-red-500" : "bg-gray-300"
+        isFavorite ? "bg-transparent" : "bg-transparent"
       }`}
     >
-      {isFavorite ? "Unfavorite" : "Favorite"}
+      {isFavorite ? (
+        <FaHeart className="text-red-500 text-2xl" />
+      ) : (
+        <FaRegHeart className="text-red-500 text-2xl" />
+      )}
     </button>
   );
 };

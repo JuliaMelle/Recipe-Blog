@@ -1,7 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import RecipeCard from "./RecipeCard";
 import RecipeDetails from "./RecipeDetails";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useParams,
+} from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { motion } from "framer-motion";
@@ -16,7 +21,14 @@ const RecipeMain = ({ isDialogOpen, setIsDialogOpen }) => {
   const [error, setError] = useState(null);
   const searchInputRef = useRef();
   const [favorites, setFavorites] = useState({});
+  const { id: recipeId } = useParams();
 
+  const toggleFavorite = (recipeId) => {
+    setFavorites((prev) => ({
+      ...prev,
+      [recipeId]: !prev[recipeId],
+    }));
+  };
   useEffect(() => {
     getRecipesFunction();
   }, [search_query]);
@@ -26,13 +38,6 @@ const RecipeMain = ({ isDialogOpen, setIsDialogOpen }) => {
       searchInputRef.current.focus();
     }
   }, [search_query]);
-  // Function to toggle favorite status of a recipe
-  const toggleFavorite = (recipeId) => {
-    setFavorites((prev) => ({
-      ...prev,
-      [recipeId]: !prev[recipeId],
-    }));
-  };
 
   const getRecipesFunction = async () => {
     setIsLoading(true);
@@ -203,7 +208,12 @@ const RecipeMain = ({ isDialogOpen, setIsDialogOpen }) => {
             <Route
               path="/recipe/:id"
               element={
-                <RecipeDetails open={isDialogOpen} setOpen={setIsDialogOpen} />
+                <RecipeDetails
+                  open={isDialogOpen}
+                  setOpen={setIsDialogOpen}
+                  toggleFavorite={toggleFavorite}
+                  recipeId={recipeId}
+                />
               }
             />
           </Routes>

@@ -4,13 +4,19 @@ import { Link } from "react-router-dom"; // Import the Link component
 import "../styles/index.css";
 const RecipeCard = ({ recipe, setIsDialogOpen }) => {
   const { label, image } = recipe?.recipe || {};
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  // Function to toggle favorite status
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
 
   console.log(recipe);
   if (!recipe) {
     return <div>Loading...</div>; // Or return null, or some placeholder content
   }
-  // Function to open the dialog
 
+  // Function to open the dialog
   const openDialog = () => {
     setIsDialogOpen(true);
   };

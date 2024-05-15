@@ -1,18 +1,52 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Fragment, useRef, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import FavoriteButton from "../components/FavoriteButton";
+
 const RecipeDetails = ({ open, setOpen }) => {
   const { id } = useParams(); // Extract the id from the URL
   const [recipe, setRecipe] = useState(null);
   const APP_ID = "b5e8ffaa";
   const APP_KEY = "366c56854db11413d53540a02d074f37";
 
-  // tailwind
-  // const [open, setOpen] = useState(true);
+  // Function to toggle favorite status of a recipe
+  const navigate = useNavigate();
+
+  const goToFavoritePage = () => {
+    navigate("/favorite-page", { state: { favorites } });
+  };
+  // const toggleFavorite = (recipeId) => {
+  //   // Implement the logic to toggle the favorite status of the recipe
+  //   // For example, update the favorites state based on the recipeId
+  //   setFavorites((prevState) => ({
+  //     ...prevState,
+  //     [recipeId]: !prevState[recipeId],
+  //   }));
+  // };
+  const [favorites, setFavorites] = useState([]); // Initialize as an array
+
+  const toggleFavorite = (recipeId) => {
+    setFavorites((prevFavorites) => {
+      let newFavorites = [...prevFavorites];
+      if (newFavorites.includes(recipeId)) {
+        // Remove the recipeId from the array if it exists
+        newFavorites = newFavorites.filter((id) => id !== recipeId);
+      } else {
+        // Add the recipeId to the array if it doesn't exist
+        newFavorites.push(recipeId);
+      }
+      localStorage.setItem("favorites", JSON.stringify(newFavorites));
+      return newFavorites;
+    });
+  };
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem("favorites");
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
+    }
+  }, []);
 
   const cancelButtonRef = useRef(null);
-
   useEffect(() => {
     const fetchRecipeDetails = async () => {
       try {
@@ -123,7 +157,18 @@ const RecipeDetails = ({ open, setOpen }) => {
                                 className="w-full h-auto mb-4 rounded-lg shadow-md"
                               />
                             </div>
-
+                            <FavoriteButton
+                              recipeId={recipe.id}
+                              isFavorite={favorites.includes(
+                                recipe.recipe.label
+                              )}
+                              onToggleFavorite={() =>
+                                toggleFavorite(recipe.recipe.label)
+                              }
+                            />
+                            {/* <button onClick={goToFavoritePage}>
+                              Go to Favorite Page
+                            </button> */}
                             <ul className="list-disc list-inside">
                               {recipe.recipe.ingredientLines.map(
                                 (ingredient, index) => (

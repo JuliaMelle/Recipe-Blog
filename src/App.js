@@ -16,6 +16,7 @@ import Profile from "./Profile";
 import PlaylistComponent from "./pages/YoutubeApi/PlaylistComponent";
 import { AuthProvider } from "./components/AuthContext";
 import IndexPage from "./pages/Main/Home";
+import FavoritePage from "./RecipeAPI/FavoritePage";
 import { getDatabase, ref, set, remove, onValue, get } from "firebase/database";
 import {
   getStorage,
@@ -264,6 +265,10 @@ const App = () => {
           />
           <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
           <Route path="/login" element={<Login />} />
+          <Route
+            path="/favorite-page"
+            element={<FavoritePage setOpen={setIsDialogOpen} />}
+          />
 
           <Route
             path="/profile"
